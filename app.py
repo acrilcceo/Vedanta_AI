@@ -6,7 +6,7 @@ from together import Together
 
 # Load API key from Hugging Face Secrets
 TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY")
-client = Together(api_key=TOGETHER_API_KEY)
+client = Together(api_key=os.getenv("TOGETHER_API_KEY"))
 
 def speak_text(text):
     tts = gTTS(text)
