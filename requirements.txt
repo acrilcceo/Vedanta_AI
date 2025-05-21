@@ -1,4 +1,4 @@
 
-gradio
-huggingface_hub
+gradio==5.30.0
+requests
 gTTS
