@@ -1,4 +1,4 @@
+
 gradio
-requests
-speechrecognition
-pyttsx3
+huggingface_hub
+gTTS
