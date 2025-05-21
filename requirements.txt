@@ -1,4 +1,5 @@
 
 gradio==5.30.0
 requests
-gTTS
+together-ai
+gtts
