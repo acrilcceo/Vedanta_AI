@@ -1,12 +1,12 @@
-
-import gradio as gr
 import os
-import requests
+import gradio as gr
 from gtts import gTTS
 import tempfile
+from together import Together
 
+# Load API key from Hugging Face Secrets
 TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY")
-MODEL = "meta-llama/Llama-3-70B-Instruct"
+client = Together(api_key=TOGETHER_API_KEY)
 
 def speak_text(text):
     tts = gTTS(text)
@@ -21,24 +21,17 @@ def respond(message, history):
         prompt += f"<|user|> {user_msg}\n<|assistant|> {bot_msg}\n"
     prompt += f"<|user|> {message}\n<|assistant|>"
 
-    headers = {
-        "Authorization": f"Bearer {TOGETHER_API_KEY}",
-        "Content-Type": "application/json"
-    }
-    payload = {
-        "model": MODEL,
-        "prompt": prompt,
-        "max_tokens": 512,
-        "temperature": 0.7,
-        "top_p": 0.95,
-        "repetition_penalty": 1.1
-    }
-    response = requests.post("https://api.together.xyz/inference", headers=headers, json=payload)
-    response_json = response.json()
-    output_text = response_json.get("output", "").strip().split("<|assistant|>")[-1].strip()
+    response = client.chat.completions.create(
+        model="meta-llama/Llama-3-8B-Instruct",
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=512,
+        temperature=0.7,
+        top_p=0.95
+    )
 
-    history.append((message, output_text))
-    audio_path = speak_text(output_text)
+    answer = response.choices[0].message.content.strip()
+    history.append((message, answer))
+    audio_path = speak_text(answer)
     return history, history, audio_path
 
 with gr.Blocks() as demo:
