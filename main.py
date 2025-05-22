@@ -1,7 +1,7 @@
 import gradio as gr
 from app import ask_ai
 
-# GA4 tracking
+# GA4 tracking script (will go into HTML block)
 tracking_script = """
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-CLNDQ829HZ"></script>
@@ -13,14 +13,16 @@ tracking_script = """
 </script>
 """
 
-with gr.Blocks() as demo:
-    gr.HTML(tracking_script)
-    gr.Markdown("## 🤖 Welcome to Sambit AI!")
-    gr.ChatInterface(
-        fn=ask_ai,
-        title="Sambit AI 🤖 — Powered by Acrilc",
-        chatbot=gr.Chatbot(),  # ✅ FIXED: Removed unsupported 'type'
-        description="Ask anything. Sambit AI uses Together's Mixtral 8x7B model."
-    )
+# A wrapper function to inject the GA script and return the chatbot interface
+def create_app():
+    with gr.Blocks() as demo:
+        gr.HTML(tracking_script)
+        gr.ChatInterface(
+            fn=ask_ai,
+            title="Sambit AI 🤖 — Powered by Acrilc",
+            description="Ask anything. Sambit AI uses Together's Mixtral 8x7B model."
+        )
+    return demo
 
+demo = create_app()
 demo.launch()
