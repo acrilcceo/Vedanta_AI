@@ -16,7 +16,7 @@ def ask_ai(message, history):
         "Content-Type": "application/json"
     }
 
-    messages = [{"role": "system", "content": "You are Sambit AI, a helpful assistant."}]
+    messages = [{"role": "system", "content": "You are Vedanta AI, a helpful assistant."}]
     for user, bot in history:
         messages.append({"role": "user", "content": user})
         messages.append({"role": "assistant", "content": bot})
