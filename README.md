@@ -1,5 +1,5 @@
 ---
-title: Sambit AI
+title: Vedanta AI
 emoji: 🤖
 colorFrom: indigo
 colorTo: pink
