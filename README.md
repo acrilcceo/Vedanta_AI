@@ -1,14 +1,11 @@
 ---
 title: Sambit AI
 emoji: 🤖
-colorFrom: gray
-colorTo: indigo
+colorFrom: indigo
+colorTo: pink
 sdk: gradio
-sdk_version: "5.30.0"
-app_file: app.py
+sdk_version: 4.24.0
+app_file: main.py
 pinned: false
+license: mit
 ---
-
-# Sambit AI - Voice-enabled AI chatbot
-
-Mobile-optimized chatbot built with Gradio + Together.ai API.

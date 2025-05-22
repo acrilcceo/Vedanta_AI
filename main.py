@@ -1,7 +1,8 @@
 
 import gradio as gr
+from app import ask_ai
 
-# Your GA4 tracking script
+# GA4 tracking
 tracking_script = """
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-CLNDQ829HZ"></script>
@@ -13,15 +14,14 @@ tracking_script = """
 </script>
 """
 
-# Simple chatbot function
-def chatbot_response(message):
-    return f"👋 Hi there! You said: {message}"
-
-# Create the UI
 with gr.Blocks() as demo:
     gr.HTML(tracking_script)
     gr.Markdown("## 🤖 Welcome to Sambit AI!")
-    gr.ChatInterface(fn=chatbot_response)
+    gr.ChatInterface(
+        fn=ask_ai,
+        title="Sambit AI 🤖 — Powered by Together & LLaMA 3",
+        chatbot=gr.Chatbot(type="messages"),
+        description="Ask anything. Sambit AI uses Together's Mixtral 8x7B model."
+    )
 
-# Launch the app (Gradio handles this on Spaces)
 demo.launch()
