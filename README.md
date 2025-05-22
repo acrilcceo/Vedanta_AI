@@ -1,13 +1,22 @@
----
-title: Sambit AI
-emoji: 💬
-colorFrom: yellow
-colorTo: purple
-sdk: gradio
-sdk_version: 5.0.1
-app_file: app.py
-pinned: false
-short_description: Your helpful AI classmate
----
+# Sambit AI (Gradio + Together API)
 
-An example chatbot using [Gradio](https://gradio.app), [`huggingface_hub`](https://huggingface.co/docs/huggingface_hub/v0.22.2/en/index), and the [Hugging Face Inference API](https://huggingface.co/docs/api-inference/index).
+This is a chatbot powered by [Together.ai](https://www.together.ai/) and the Mixtral 8x7B model, deployed with Gradio.
+
+## 🔧 Setup
+
+1. Create a new Space on Hugging Face → Gradio template.
+2. Add your Together API key in the **Settings > Secrets** tab as:
+
+```
+TOGETHER_API_KEY=your_api_key_here
+```
+
+3. Upload these files or the full ZIP.
+
+## 🚀 Model Used
+- Model: `mistralai/Mixtral-8x7B-Instruct-v0.1`
+- Provider: [Together.ai](https://docs.together.ai/docs/inference)
+
+## 🎙 Usage
+
+Just ask anything! Sambit AI will respond with answers from the Together inference API.

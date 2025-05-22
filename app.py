@@ -1,12 +1,11 @@
 import gradio as gr
-import os
 import requests
+import os
 
-# ✅ Load API key from Hugging Face Secrets (set in Settings → Secrets)
-API_KEY = os.getenv("TOGETHER_API_KEY")
+API_KEY = os.environ.get("TOGETHER_API_KEY")
 MODEL_NAME = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 
-def ask_ai(message):
+def ask_ai(message, history):
     if not API_KEY:
         return "❌ API key not found. Please set it in Settings → Secrets."
 
@@ -15,12 +14,16 @@ def ask_ai(message):
         "Authorization": f"Bearer {API_KEY}",
         "Content-Type": "application/json"
     }
+
+    messages = [{"role": "system", "content": "You are Sambit AI, a helpful assistant."}]
+    for user, bot in history:
+        messages.append({"role": "user", "content": user})
+        messages.append({"role": "assistant", "content": bot})
+    messages.append({"role": "user", "content": message})
+
     data = {
         "model": MODEL_NAME,
-        "messages": [
-            {"role": "system", "content": "You are Sambit AI, a helpful assistant."},
-            {"role": "user", "content": message}
-        ]
+        "messages": messages
     }
 
     try:
@@ -32,9 +35,9 @@ def ask_ai(message):
     except Exception as e:
         return f"❌ Error: {str(e)}"
 
-# ✅ Gradio UI
-chat_interface = gr.ChatInterface(fn=ask_ai, title="Sambit AI 🤖 — Powered by Together & LLaMA 3")
-
-# ✅ Launch the app
-if __name__ == "__main__":
-    chat_interface.launch()
+gr.ChatInterface(
+    fn=ask_ai,
+    title="Sambit AI 🤖 — Powered by Together & LLaMA 3",
+    chatbot=gr.Chatbot(type="messages"),
+    description="Ask anything. Sambit AI uses Together's Mixtral 8x7B model.",
+).launch()
