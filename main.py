@@ -19,8 +19,8 @@ def create_app():
         gr.HTML(tracking_script)
         gr.ChatInterface(
             fn=ask_ai,
-            title="Sambit AI 🤖 — Powered by Acrilc",
-            description="Ask anything. Sambit AI uses Together's Mixtral 8x7B model."
+            title="Vedanta AI — Powered by Acrilc",
+            description="Ask anything. Vedanta AI: build by Sambit Ghosh."
         )
     return demo
 
