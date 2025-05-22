@@ -38,7 +38,7 @@ def ask_ai(message, history):
 with gr.Blocks(theme=gr.themes.Base(), css=".gradio-container { max-width: 100% !important; padding: 1rem; }") as demo:
     with gr.Row():
         gr.Image(value="acrilc logo branding new name-16-16.png", height=60, show_label=False, container=False)
-        gr.Markdown("## Sambit AI 🤖 — Powered by Together & LLaMA 3", elem_id="title")
+        gr.Markdown("## Sambit AI 🤖 — Powered by Acrilc", elem_id="title")
 
     chatbot = gr.Chatbot(label="Chat with Sambit AI", height=400)
     with gr.Row():
