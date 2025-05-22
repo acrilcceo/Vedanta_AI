@@ -35,9 +35,26 @@ def ask_ai(message, history):
     except Exception as e:
         return f"❌ Error: {str(e)}"
 
-gr.ChatInterface(
-    fn=ask_ai,
-    title="Sambit AI 🤖 — Powered by Acrilc",
-    chatbot=gr.Chatbot(type="messages"),
-    description="Ask anything. Sambit AI uses Together's Mixtral 8x7B model.",
-).launch()
+with gr.Blocks(theme=gr.themes.Base(), css=".gradio-container { max-width: 100% !important; padding: 1rem; }") as demo:
+    with gr.Row():
+        gr.Image(value="acrilc logo branding new name-16-16.png", height=60, show_label=False, container=False)
+        gr.Markdown("## Sambit AI 🤖 — Powered by Together & LLaMA 3", elem_id="title")
+
+    chatbot = gr.Chatbot(label="Chat with Sambit AI", height=400)
+    with gr.Row():
+        msg = gr.Textbox(placeholder="Ask anything...", scale=4)
+        send = gr.Button("Send", scale=1)
+
+    clear = gr.Button("🧹 Clear chat")
+    state = gr.State([])
+
+    def respond(message, history):
+        reply = ask_ai(message, history)
+        history.append((message, reply))
+        return history, ""
+
+    send.click(respond, [msg, state], [chatbot, msg])
+    msg.submit(respond, [msg, state], [chatbot, msg])
+    clear.click(lambda: ([], ""), None, [chatbot, msg])
+
+demo.launch()
