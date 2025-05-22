@@ -34,4 +34,4 @@ def ask_ai(message, history):
         reply = result['choices'][0]['message']['content']
         return reply
     except Exception as e:
-        return f"❌ Error: {str(e)}"
+        return f" Error: {str(e)}"
