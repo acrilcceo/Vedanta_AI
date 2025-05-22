@@ -1,55 +1,40 @@
 import gradio as gr
-from together import Together
-from gtts import gTTS
-import tempfile
 import os
+import requests
 
-# Get your Together API key from Hugging Face secret
-TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY")
+# ✅ Load API key from Hugging Face Secrets (set in Settings → Secrets)
+API_KEY = os.getenv("TOGETHER_API_KEY")
+MODEL_NAME = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 
-# Initialize Together client
-client = Together(api_key=TOGETHER_API_KEY)
+def ask_ai(message):
+    if not API_KEY:
+        return "❌ API key not found. Please set it in Settings → Secrets."
 
-# Text-to-speech with gTTS
-def speak_text(text):
-    tts = gTTS(text)
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
-        tts.save(fp.name)
-        return fp.name
+    url = "https://api.together.xyz/v1/chat/completions"
+    headers = {
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "model": MODEL_NAME,
+        "messages": [
+            {"role": "system", "content": "You are Sambit AI, a helpful assistant."},
+            {"role": "user", "content": message}
+        ]
+    }
 
-# Main chat function
-def respond(message, history):
-    history = history or []
-    prompt = ""
-    for user_msg, bot_msg in history:
-        prompt += f"<|user|> {user_msg}\n<|assistant|> {bot_msg}\n"
-    prompt += f"<|user|> {message}\n<|assistant|>"
+    try:
+        response = requests.post(url, headers=headers, json=data)
+        response.raise_for_status()
+        result = response.json()
+        reply = result['choices'][0]['message']['content']
+        return reply
+    except Exception as e:
+        return f"❌ Error: {str(e)}"
 
-    # Call Together API
-    response = client.chat.completions.create(
-        model="meta-llama/Llama-3-8B-Instruct",
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=512,
-        temperature=0.7,
-        top_p=0.95
-    )
+# ✅ Gradio UI
+chat_interface = gr.ChatInterface(fn=ask_ai, title="Sambit AI 🤖 — Powered by Together & LLaMA 3")
 
-    reply = response.choices[0].message.content.strip()
-    history.append((message, reply))
-    audio_path = speak_text(reply)
-    return history, history, audio_path
-
-# Gradio UI
-with gr.Blocks() as demo:
-    gr.Markdown("## Sambit AI 🤖 — Powered by Together & LLaMA 3")
-
-    chatbot = gr.Chatbot(label="Chat with AI")
-    msg = gr.Textbox(label="Type your message here")
-    audio_output = gr.Audio(label="AI Voice", interactive=False)
-    clear = gr.Button("Clear Chat")
-    state = gr.State([])
-
-    msg.submit(respond, [msg, state], [chatbot, state, audio_output])
-    clear.click(lambda: ([], [], None), None, [chatbot, state, audio_output])
-
-demo.launch()
+# ✅ Launch the app
+if __name__ == "__main__":
+    chat_interface.launch()
