@@ -8,7 +8,7 @@ MODEL_NAME = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 
 def ask_ai(message, history):
     if not API_KEY:
-        return "❌ API key not found. Please set it in Settings → Secrets."
+        return "API key not found. Please set it in Settings → Secrets."
 
     url = "https://api.together.xyz/v1/chat/completions"
     headers = {
