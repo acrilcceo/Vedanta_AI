@@ -1,22 +1,25 @@
-# Sambit AI (Gradio + Together API)
+---
+title: Sambit AI
+emoji: 🤖
+colorFrom: indigo
+colorTo: pink
+sdk: gradio
+sdk_version: "5.30.0"
+app_file: app.py
+pinned: false
+---
 
-This is a chatbot powered by [Together.ai](https://www.together.ai/) and the Mixtral 8x7B model, deployed with Gradio.
+# Sambit AI - Chat with Voice
 
-## 🔧 Setup
+A voice-enabled chatbot powered by Together AI's Mixtral model. Ask via text or voice, get spoken responses!
 
-1. Create a new Space on Hugging Face → Gradio template.
-2. Add your Together API key in the **Settings > Secrets** tab as:
+Built with Python, Gradio, and the Together API.
 
-```
-TOGETHER_API_KEY=your_api_key_here
-```
+## 🛠️ Features
 
-3. Upload these files or the full ZIP.
+- Chat interface using Gradio
+- Speech recognition via microphone
+- AI replies using Together API
+- Voice responses with gTTS
 
-## 🚀 Model Used
-- Model: `mistralai/Mixtral-8x7B-Instruct-v0.1`
-- Provider: [Together.ai](https://docs.together.ai/docs/inference)
-
-## 🎙 Usage
-
-Just ask anything! Sambit AI will respond with answers from the Together inference API.
+> Make sure to add your `TOGETHER_API_KEY` in **Settings > Secrets** for it to work!
